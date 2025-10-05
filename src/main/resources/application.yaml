@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: spring-batch-jdbc
+  datasource:
+    url: jdbc:postgresql://localhost:5432/batch?reWriteBatchedInserts=true
+    driver-class-name: org.postgresql.Driver
+    username: root
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+    open-in-view: false

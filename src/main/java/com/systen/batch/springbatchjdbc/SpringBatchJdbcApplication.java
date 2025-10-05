@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBatchJdbcApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBatchJdbcApplication.class, args);
+		System.exit(SpringApplication.exit(SpringApplication.run(SpringBatchJdbcApplication.class, args)));
 	}
 
 }
