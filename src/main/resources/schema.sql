@@ -4,6 +4,7 @@ CREATE TABLE posts
     id         BIGSERIAL PRIMARY KEY,
     title      VARCHAR(255),
     content    VARCHAR(500),
+    views      BIGINT DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

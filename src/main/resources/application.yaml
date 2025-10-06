@@ -21,3 +21,6 @@ spring:
         format_sql: true
         highlight_sql: true
     open-in-view: false
+logging:
+  level:
+    sql: DEBUG
