@@ -29,4 +29,8 @@ public class Post {
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 
+	public void addViews() {
+		this.views++;
+	}
+
 }

@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  * ./gradlew bootRun --args='--spring.batch.job.name=postPageJob'
  */
 @Slf4j
-@Configuration
+// @Configuration
 @RequiredArgsConstructor
 public class PostPageConfig {
 	private final JobRepository jobRepository;
