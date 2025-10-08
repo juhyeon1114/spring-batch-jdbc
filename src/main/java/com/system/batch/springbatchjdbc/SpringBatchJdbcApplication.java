@@ -2,7 +2,9 @@ package com.system.batch.springbatchjdbc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan(basePackages = {"com.system.batch.springbatchjdbc.config.jpa"})
 @SpringBootApplication
 public class SpringBatchJdbcApplication {
 

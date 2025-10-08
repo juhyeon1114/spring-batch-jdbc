@@ -1,6 +1,6 @@
-package com.system.batch.springbatchjdbc.config;
+package com.system.batch.springbatchjdbc.config.jdbc;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -11,12 +11,10 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
-import org.springframework.batch.item.database.JdbcPagingItemReader;
-import org.springframework.batch.item.database.Order;
+import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
-import org.springframework.batch.item.database.builder.JdbcPagingItemReaderBuilder;
+import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.system.batch.springbatchjdbc.entity.Post;
@@ -25,48 +23,45 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * ./gradlew bootRun --args='--spring.batch.job.name=postPageJob'
+ * ./gradlew bootRun --args='--spring.batch.job.name=postCursorJob'
  */
 @Slf4j
 // @Configuration
 @RequiredArgsConstructor
-public class PostPageConfig {
+public class PostCursorConfig {
 	private final JobRepository jobRepository;
 	private final PlatformTransactionManager transactionManager;
 	private final DataSource dataSource;
 
 	@Bean
-	public Job postPageJob() {
-		return new JobBuilder("postPageJob", jobRepository)
-			.start(postPageStep())
+	public Job postCursorJob() {
+		return new JobBuilder("postCursorJob", jobRepository)
+			.start(postCursorStep())
 			.build();
 	}
 
 	@Bean
-	public Step postPageStep() {
-		return new StepBuilder("postPageStep", jobRepository)
+	public Step postCursorStep() {
+		return new StepBuilder("postCursorStep", jobRepository)
 			.<Post, Post>chunk(3, transactionManager)
-			.reader(postPageReader())
-			.processor(postPageProcessor())
+			.reader(postCursorReader())
+			.processor(postCursorProcessor())
 			.writer(postWriter())
 			.allowStartIfComplete(true)
 			.build();
 	}
 
 	@Bean
-	public JdbcPagingItemReader<Post> postPageReader() {
-		return new JdbcPagingItemReaderBuilder<Post>()
-			.name("postPageReader")
+	public JdbcCursorItemReader<Post> postCursorReader() {
+		return new JdbcCursorItemReaderBuilder<Post>()
+			.name("postCursorReader")
 			.dataSource(dataSource)
-			.pageSize(3)
-			.selectClause("select *")
-			.fromClause("from posts")
-			.whereClause("id <= :id")
-			.sortKeys(Map.of("id", Order.ASCENDING))
-			.parameterValues(Map.of(
-				"id", 9
-			))
+			.sql("SELECT * FROM posts WHERE id <= ? ORDER BY id ASC")
+			.queryArguments(List.of(9))
 			.beanRowMapper(Post.class)
+			// .rowMapper((rs, rowNum) -> {
+			// 	// 맵핑 직접 구현 가능
+			// })
 			.build();
 	}
 
@@ -74,7 +69,7 @@ public class PostPageConfig {
 	 * id가 짝수인 것만 필터링
 	 */
 	@Bean
-	public ItemProcessor<Post, Post> postPageProcessor() {
+	public ItemProcessor<Post, Post> postCursorProcessor() {
 		return item -> {
 			boolean isEven = item.getId() % 2 == 0;
 			return isEven ? item : null;

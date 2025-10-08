@@ -1,4 +1,4 @@
-package com.system.batch.springbatchjdbc.config;
+package com.system.batch.springbatchjdbc.config.jpa;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
