@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan(basePackages = {"com.system.batch.springbatchjdbc.config.querydsl"})
+@ComponentScan(basePackages = {"com.system.batch.springbatchjdbc.config.faulttolerant"})
 @SpringBootApplication
 public class SpringBatchJdbcApplication {
 
