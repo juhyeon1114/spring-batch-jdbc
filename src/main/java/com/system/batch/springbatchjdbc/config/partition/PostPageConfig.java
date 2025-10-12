@@ -75,18 +75,20 @@ public class PostPageConfig {
 	@Bean
 	@StepScope
 	public JpaPagingItemReader<Post> postReader(
-		@Value("#{stepExecutionContext['lastId']}") Integer lastId
+		@Value("#{stepExecutionContext['fromId']}") Integer fromId,
+		@Value("#{stepExecutionContext['toId']}") Integer toId
 	) {
 		return new JpaPagingItemReaderBuilder<Post>()
 			.name("postReader")
 			.entityManagerFactory(entityManagerFactory)
 			.queryString("""
 				SELECT p FROM Post p
-				WHERE p.id <= :lastId
+				WHERE :fromId < p.id AND p.id <= :toId
 				ORDER BY p.id ASC
 				""")
 			.parameterValues(Map.of(
-				"lastId", lastId
+				"fromId", fromId,
+				"toId", toId
 			))
 			.pageSize(CHUNK_SIZE)
 			.transacted(false)

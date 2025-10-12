@@ -23,9 +23,12 @@ public class PostRangePartitioner implements Partitioner {
 
 		for (int i = 0; i < gridSize; i++) {
 			ExecutionContext executionContext = new ExecutionContext();
-			int lastId = CHUNK_SIZE * (i + 1);
-			executionContext.putInt("lastId", lastId);
-			partitions.put("lastId" + lastId, executionContext);
+			int fromId = CHUNK_SIZE * i;
+			int toId = CHUNK_SIZE * (i + 1);
+			executionContext.putInt("fromId", fromId);
+			executionContext.putInt("toId", toId);
+			partitions.put("fromId" + fromId, executionContext);
+			partitions.put("toId" + toId, executionContext);
 		}
 
 		return partitions;
