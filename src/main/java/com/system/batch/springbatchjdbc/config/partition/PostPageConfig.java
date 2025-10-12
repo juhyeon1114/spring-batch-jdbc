@@ -94,6 +94,7 @@ public class PostPageConfig {
 	}
 
 	@Bean
+	@StepScope
 	public ItemProcessor<Post, Post> postProcessor() {
 		return item -> {
 			boolean isEven = item.getId() % 2 == 0;
@@ -106,6 +107,7 @@ public class PostPageConfig {
 	}
 
 	@Bean
+	@StepScope
 	public JpaItemWriter<Post> postWriter() {
 		return new JpaItemWriterBuilder<Post>()
 			.entityManagerFactory(entityManagerFactory)
